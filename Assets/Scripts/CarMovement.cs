@@ -8,16 +8,11 @@ public class CarMovement : MonoBehaviour
     private Grid _grid;
     [SerializeField]
     private Transform positionTransform, modelTransform;
+   
 
     public Vector3 CalculateMove(Vector3Int dir) 
     {
         return _grid.CellToWorld(_grid.WorldToCell(transform.position) + dir); 
-    }
-
-
-    private void InitStats(BaseStatsSO stats)
-    {
-
     }
 
     private void OnDrawGizmos()

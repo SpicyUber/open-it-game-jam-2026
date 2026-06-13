@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a95d7ca9c0b20c74cac1e9fed02bcf52, type: 3}
+  m_Name: PlayerBaseStats
+  m_EditorClassIdentifier: Assembly-CSharp::BaseStatsSO
+  MaxFuel: 50
+  Speed: 20
+  Attack: 20
+  Defense: 10
