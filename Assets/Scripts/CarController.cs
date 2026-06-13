@@ -7,6 +7,10 @@ public class CarController : MonoBehaviour
 {
     private CarMovement _carMovement;
     private EffectPlayer _effectPlayer;
+
+    [SerializeField]
+    GridDisplayLogic _gridLogic;
+
     private Rail _rail;
 
     [SerializeField]
@@ -17,7 +21,35 @@ public class CarController : MonoBehaviour
         _rail = GetComponentInParent<Rail>();
         _carMovement = GetComponent<CarMovement>();
         _effectPlayer = GetComponent<EffectPlayer>();
-        MoveLeft();
+       // MoveLeft();
+    }
+
+    public void HideGrid() => _gridLogic.Hide();
+
+    public void ShowGrid() => _gridLogic.Show();
+
+    public void Update()
+    {
+        
+
+        Quaternion targetRot = WaypointManager.Instance.GetRotation(_rail.GetT());
+
+        Quaternion lerpRot = Quaternion.Slerp(
+            _rail.transform.rotation,
+            targetRot,
+            10f * Time.deltaTime
+        );
+
+        _rail.transform.rotation = lerpRot;
+        _carMovement.PositionTransform.rotation = lerpRot;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (WaypointManager.Instance == null) return;
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(
+        WaypointManager.Instance.GetPosition(_rail.GetT()),0.75f);
     }
 
     public void SetT(float t) => _rail.SetT(t);
@@ -36,8 +68,14 @@ public class CarController : MonoBehaviour
         _rail.Freeze();
     }
 
+    public void SpeedUp(int speedMult) => _rail.VisualSpeed = Rail.BaseVisualSpeed *  speedMult;
+
+    public void SpeedReset() => _rail.VisualSpeed = Rail.BaseVisualSpeed;
+
     public void UnFreeze()
     {
         _rail.UnFreeze();
     }
+
+    public float GetT() => _rail.GetT();
 }

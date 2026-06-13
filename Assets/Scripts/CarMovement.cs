@@ -7,7 +7,7 @@ public class CarMovement : MonoBehaviour
     [SerializeField]
     private Grid _grid;
     [SerializeField]
-    private Transform positionTransform, modelTransform;
+    public Transform PositionTransform, ModelTransform;
    
 
     public Vector3 CalculateMove(Vector3Int dir) 
@@ -17,7 +17,7 @@ public class CarMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(positionTransform.position, 1);
+        Gizmos.DrawSphere(PositionTransform.position, 1);
         Gizmos.DrawSphere(CalculateMove(Vector3Int.right),1);
         Gizmos.DrawSphere(CalculateMove(Vector3Int.left),1);
 
@@ -25,7 +25,7 @@ public class CarMovement : MonoBehaviour
 
     public void Move( Vector3 endPos ,float duration, Action onComplete = null, float tiltAngle = 45)
     {
-        Vector3 startPos = positionTransform.position;
+        Vector3 startPos = PositionTransform.position;
 
         Vector3 direction = (endPos-startPos).normalized;
 
@@ -35,18 +35,18 @@ public class CarMovement : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(
-            modelTransform.DORotate(
+            ModelTransform.DORotate(
                 new Vector3(0, 0, angle),
                 duration * 0.2f
             )
         );
 
         sequence.Join(
-            positionTransform.DOLocalMove(transform.InverseTransformPoint(endPos), duration)
+            PositionTransform.DOLocalMove(transform.InverseTransformPoint(endPos), duration)
         );
 
         sequence.Append(
-            modelTransform.DORotate(
+            ModelTransform.DORotate(
                 Vector3.zero,
                 duration * 0.2f
             )
