@@ -11,7 +11,6 @@ public class CameraLogic : Singleton<CameraLogic>
     {
         transform.position = Behind.position;
         transform.rotation = Behind.rotation;
-        TransitionTo(Above,2f);
 
     }
 
