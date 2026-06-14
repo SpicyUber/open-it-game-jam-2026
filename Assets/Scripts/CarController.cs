@@ -7,11 +7,16 @@ using UnityEngine;
 [RequireComponent(typeof(EffectPlayer))]
 public class CarController : MonoBehaviour
 {
+    [SerializeField] private GameObject explosionPrefab;
+
     private CarMovement _carMovement;
     private EffectPlayer _effectPlayer;
 
     public PlayerFuel Fuel;
     public PlayerNitro Nitro;
+
+    public AudioClip changeLaneSound;
+    private AudioSource audioSource;
 
     [SerializeField]
     Card[] enemyAbilites;
@@ -38,6 +43,8 @@ public class CarController : MonoBehaviour
         _carMovement = GetComponent<CarMovement>();
         _effectPlayer = GetComponent<EffectPlayer>();
         // MoveLeft();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void HideGrid() => _gridLogic.Hide();
@@ -67,7 +74,33 @@ public class CarController : MonoBehaviour
     }
 
     public void SetT(float t) => _rail.SetT(t);
+<<<<<<< HEAD
     
+=======
+    public void MoveLeft()
+    {
+        _moving = true;
+        Debug.Log("MOVE LEFT!");
+        if (_alignment < 0) return;
+        _alignment--;
+        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.left), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
+
+        if (changeLaneSound != null)
+            audioSource.PlayOneShot(changeLaneSound);
+    }
+
+    public void MoveRight()
+    {
+        _moving = true;
+        Debug.Log("MOVE RIGHT!");
+        if (_alignment > 0) return;
+        _alignment++;
+        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.right), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
+
+        if (changeLaneSound != null)
+            audioSource.PlayOneShot(changeLaneSound);
+    }
+>>>>>>> ce0c126ac80c5641abce97eab7a80fc2e968d983
 
     public bool IsHit(List<TargetLane> lanes)
     {
@@ -158,6 +191,9 @@ public class CarController : MonoBehaviour
     internal void ExplodeYourself()
     {
         //TO DO EXPLODE ENEMY
+        Vector3 enemyPos = this.transform.position;
+        GameObject explosion = Instantiate(this.explosionPrefab, enemyPos, Quaternion.identity);
+        Destroy(explosion, 3f);
         Destroy(this.gameObject);
     }
 }

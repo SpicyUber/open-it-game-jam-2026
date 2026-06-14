@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ca837bd13fa1f41a0cff4ff3f1e9f6, type: 3}
   m_Name: Pit Crew
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardImage: {fileID: 0}
+  cardImage: {fileID: 21300000, guid: 050d679ad253f624e8f9acbe5e6d4e6e, type: 3}
   cardName: Pit Crew
   cardType: 2
   effectDescription: The team's got your back. Instantly restore 15 Fuel points and

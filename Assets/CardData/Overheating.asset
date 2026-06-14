@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ca837bd13fa1f41a0cff4ff3f1e9f6, type: 3}
   m_Name: Overheating
   m_EditorClassIdentifier: Assembly-CSharp::Card
-  cardImage: {fileID: 0}
+  cardImage: {fileID: 21300000, guid: e527718c07af19e4f9bed47827ff4d55, type: 3}
   cardName: Overheating
   cardType: 3
   effectDescription: Too hot to handle. Opponent lose 20 Nitro points.

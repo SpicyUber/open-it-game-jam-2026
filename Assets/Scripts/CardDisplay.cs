@@ -23,6 +23,9 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private Card _card = null;
 
+    public AudioClip hoverSound;
+    private AudioSource audioSource;
+
     private Vector2 originalPos;
 
     void Awake()
@@ -32,6 +35,8 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
 
         originalPos = rectTransform.anchoredPosition;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnDisable()
@@ -66,6 +71,8 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         rectTransform.DOKill();
         rectTransform.DOAnchorPos(originalPos + new Vector2(0, 260f), 0.15f)
             .SetEase(Ease.OutQuad);
+        if (hoverSound != null)
+            audioSource.PlayOneShot(hoverSound);
     }
 
     public void OnPointerExit(PointerEventData eventData)
