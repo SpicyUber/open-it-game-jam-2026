@@ -1,3 +1,4 @@
+using DG.Tweening;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -15,6 +16,8 @@ public class GameManager : Singleton<GameManager>
     public Card[] Hand;
     public CardDisplay[] CardDisplays;
     public CarController Player;
+
+    public GameObject SpikeFX, SmokeFX, FireFX, GumFX, OilFX;
 
     private GameState _state = GameState.Start;
 
@@ -87,26 +90,95 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    IEnumerator ApplyEffectsRoutine(CarController player,CarController enemy,Card playerCard, Card enemyCard , CarController playerTarget, CarController enemyTarget) 
+    {
+        ShootAbilityFX(playerCard, playerTarget,player);
+
+        yield return new WaitForSeconds(2.5f);
+
+        ShootAbilityFX(enemyCard, enemyTarget,enemy);
+
+        yield return new WaitForSeconds(2.5f);
+
+        TryEndFight();
+    }
+
+    private void ShootAbilityFX(Card card, CarController target, CarController caster)
+    {
+        caster.Movement.ModelTransform.DOPunchScale(Vector3.one * 0.3f, 0.4f, 5, 0.5f);
+        GameObject fx = GetEffectPrefab(card.Effect);
+        if (fx == null) return;
+
+        foreach (TargetLane lane in card.targetLanes)
+        {
+            Vector3 basePos = WaypointManager.Instance.GetPosition(target.GetT());
+
+            Vector3 laneOffset = 6* ((int)lane - 1) * (WaypointManager.Instance.GetRotation(target.GetT()) * Vector3.right);
+            Vector3 spawnPos = basePos + laneOffset;
+
+            GameObject instance = Instantiate(fx, spawnPos, Quaternion.identity);
+
+            var particles = instance.GetComponentsInChildren<ParticleSystem>();
+            foreach (var ps in particles)
+            {
+                var main = ps.main;
+                main.startColor = card.Color;
+            }
+
+            
+            
+                        GameObject railAnchor = new GameObject("FX_RailAnchor");
+            Rail rail = railAnchor.AddComponent<Rail>();
+            rail.SetT(target.GetT());
+
+            instance.transform.SetParent(railAnchor.transform);
+            instance.transform.localPosition = laneOffset; 
+
+            Destroy(railAnchor, 2f);
+        }
+    }
+
+    private GameObject GetEffectPrefab(EffectType effect)
+    {
+        return effect switch
+        {
+            EffectType.Spike => SpikeFX,
+            EffectType.Smoke => SmokeFX,
+            EffectType.Fire => FireFX,
+            EffectType.Gum => GumFX,
+            EffectType.Oil => OilFX,
+            _ => null
+        };
+    }
     void UseCard(Card card)
     {
+        Card playerCard = null;
+        CarController playerTarget = null;
+        Card enemyCard = null;
+        CarController enemyTarget = null;
+
         for (int i = 0; i < Hand.Length; i++)
         {
             if (Hand[i] == card)
             {
-                UseCardAbility(card, _enemyQueue.Peek(), Player);
+              playerCard =  UseCardAbility(card, _enemyQueue.Peek(), Player);
                 Hand[i] = null;
                 Deck.Add(card);
             }
         }
 
-        UseCardAbility(_enemyQueue.Peek().RandomAbility(), Player, _enemyQueue.Peek());
+        enemyCard = UseCardAbility(_enemyQueue.Peek().RandomAbility(), Player, _enemyQueue.Peek());
+        if (enemyCard != null && enemyCard.cardType == CardType.Buff) { enemyTarget = _enemyQueue.Peek(); } else { enemyTarget = Player; }
+        if (playerCard != null && playerCard.cardType == CardType.Buff) { playerTarget = Player; }else { playerTarget = _enemyQueue.Peek(); }
 
         _resolvedTurnCount++;
         LogTurnResourceState(_enemyQueue.Peek());
 
         PlayerSelectedCard = null;
 
-        TryEndFight();
+        StartCoroutine(ApplyEffectsRoutine(Player, _enemyQueue.Peek(), playerCard,enemyCard,playerTarget, enemyTarget));
+
+        
     }
 
     private void LogTurnResourceState(CarController enemy)
@@ -152,16 +224,16 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void UseCardAbility(Card card, CarController target, CarController caster)
+    private Card UseCardAbility(Card card, CarController target, CarController caster)
     {
-        if (card == null || target == null || caster == null) return;
+        if (card == null || target == null || caster == null) return null;
 
         Debug.Log($"USED {card.cardName} | Type: {card.cardType}");
 
         if (!caster.SpendNitro(card.nitroPoints))
         {
             Debug.Log(caster.gameObject.name + ": NOT ENOUGH NITRO!!!");
-            return;
+            return null;
         }
 
         switch (card.cardType)
@@ -182,6 +254,8 @@ public class GameManager : Singleton<GameManager>
                 ApplyWildCard(card, target, caster);
                 break;
         }
+
+        return card;
     }
 
     private void ApplyAttack(Card card, CarController target)

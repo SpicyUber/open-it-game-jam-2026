@@ -21,3 +21,5 @@ MonoBehaviour:
   nitroBuff: 0
   fuelBuff: 0
   targetLanes: 0100000002000000
+  Effect: 3
+  Color: {r: 1, g: 0.25943398, b: 0.8751779, a: 0}

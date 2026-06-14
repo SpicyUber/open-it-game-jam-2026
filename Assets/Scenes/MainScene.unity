@@ -2264,6 +2264,11 @@ MonoBehaviour:
   - {fileID: 2025945627}
   - {fileID: 571746138}
   Player: {fileID: 263791161}
+  SpikeFX: {fileID: 101130, guid: d7bf18dd20422304ea868e95c3518f19, type: 3}
+  SmokeFX: {fileID: 100000, guid: ab1112643ee572748b01dede71158272, type: 3}
+  FireFX: {fileID: 100000, guid: 756d99540142b5e4a8d174e18a6310d9, type: 3}
+  GumFX: {fileID: 132290, guid: e49403f034d74ee44aa8a41b0ee4abfd, type: 3}
+  OilFX: {fileID: 191114, guid: 834c99069a124aa439d5795c3579843b, type: 3}
   StartCountdownChanged:
     m_PersistentCalls:
       m_Calls:

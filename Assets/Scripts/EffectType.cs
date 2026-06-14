@@ -2,5 +2,5 @@ using UnityEngine;
 
 public enum EffectType
 {
-    Spike, Smoke, Fire, Gum, Oil
+    Spike, Smoke, Fire, Gum, Oil, None
 }

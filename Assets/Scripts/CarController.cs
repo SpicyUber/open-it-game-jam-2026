@@ -21,6 +21,8 @@ public class CarController : MonoBehaviour
     [SerializeField]
     Card[] enemyAbilites;
 
+    public CarMovement Movement => _carMovement;
+
     public Card RandomAbility()
     {
         return enemyAbilites[UnityEngine.Random.Range(0, enemyAbilites.Length)];
@@ -170,6 +172,20 @@ public class CarController : MonoBehaviour
             f.ModifyFuel(fuelMod);
     }
 
+    public Vector3 GetLaneOffset(int lane)
+    {
+        // lane: -1 = left, 0 = middle, 1 = right
+        // difference between requested lane and current alignment
+        int delta = lane - _alignment;
+        return _carMovement.CalculateMove(new Vector3Int(delta, 0, 0))
+               - _carMovement.PositionTransform.position;
+    }
+
+
+    public Vector3 GetGridWorldPosition()
+    {
+        return _carMovement.PositionTransform.position;
+    }
     internal void ExplodeYourself()
     {
         //TO DO EXPLODE ENEMY
