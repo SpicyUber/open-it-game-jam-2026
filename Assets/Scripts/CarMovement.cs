@@ -12,7 +12,7 @@ public class CarMovement : MonoBehaviour
 
     public Vector3 CalculateMove(Vector3Int dir) 
     {
-        return _grid.CellToWorld(_grid.WorldToCell(transform.position) + dir); 
+        return _grid.CellToWorld(_grid.WorldToCell(PositionTransform.position) + dir); 
     }
 
     private void OnDrawGizmos()
@@ -25,6 +25,8 @@ public class CarMovement : MonoBehaviour
 
     public void Move( Vector3 endPos ,float duration, Action onComplete = null, float tiltAngle = 45)
     {
+        PositionTransform.DOKill();
+        ModelTransform.DOKill();
         Vector3 startPos = PositionTransform.position;
 
         Vector3 direction = (endPos-startPos).normalized;

@@ -67,23 +67,7 @@ public class CarController : MonoBehaviour
     }
 
     public void SetT(float t) => _rail.SetT(t);
-    public void MoveLeft()
-    {
-        _moving = true;
-        Debug.Log("MOVE LEFT!");
-        if (_alignment < 0) return;
-        _alignment--;
-        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.left), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
-    }
-
-    public void MoveRight()
-    {
-        _moving = true;
-        Debug.Log("MOVE RIGHT!");
-        if (_alignment > 0) return;
-        _alignment++;
-        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.right), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
-    }
+    
 
     public bool IsHit(List<TargetLane> lanes)
     {
@@ -112,7 +96,38 @@ public class CarController : MonoBehaviour
         return true;
     }
 
-    public void Stay() { _moving = true; Debug.Log("STAY!"); GameManager.Instance.EndMoveTurn(); _moving = false; }
+    public void MoveLeft()
+    {
+        if (_moving) return;
+        if (_alignment <= -1) return; // already at left edge
+        _moving = true;
+        _alignment--;
+        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.left), 1f, () =>
+        {
+            _effectPlayer.PlayDustCloud();
+            _moving = false;
+        });
+    }
+
+    public void MoveRight()
+    {
+        if (_moving) return;
+        if (_alignment >= 1) return; // already at right edge
+        _moving = true;
+        _alignment++;
+        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.right), 1f, () =>
+        {
+            _effectPlayer.PlayDustCloud();
+            _moving = false;
+        });
+    }
+
+    public void Stay()
+    {
+        // no animation needed, just notify moving is done
+    }
+
+    public bool IsMoving => _moving;
 
     public void Freeze()
     {

@@ -14,9 +14,9 @@ public class PlayerFuel : MonoBehaviour
     {
         int val = (int)v;
 
-        _currentFuel = Mathf.Clamp(_currentFuel - val,0,100f);
+        _currentFuel = Mathf.Clamp(_currentFuel + val,0,100f);
 
-        OnChange?.Invoke(val);
+        OnChange?.Invoke((int)_currentFuel);
 
         if (_currentFuel == 0) OnDeath?.Invoke();
 

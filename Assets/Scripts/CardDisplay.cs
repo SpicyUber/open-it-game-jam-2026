@@ -21,7 +21,7 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private Button button;
     private RectTransform rectTransform;
 
-    private Card _card = null ;
+    private Card _card = null;
 
     private Vector2 originalPos;
 
@@ -30,20 +30,28 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         button = GetComponent<Button>();
         rectTransform = GetComponentInChildren<RectTransform>();
 
-        button.onClick.AddListener(OnClick);
 
         originalPos = rectTransform.anchoredPosition;
+    }
+
+    private void OnDisable()
+    {
+        rectTransform.DOKill();
+    }
+
+    private void OnEnable()
+    {
+        rectTransform.DOKill();
     }
 
     public void Init(Card card)
     {
         if (card == null)
         {
-            gameObject.SetActive(false);
+          
             return;
         }
 
-        gameObject.SetActive(true);
 
         cardName.text = card.name;
         cardImage.sprite = card.cardImage;
@@ -67,8 +75,7 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             .SetEase(Ease.OutQuad);
     }
 
-    private void OnClick()
-    {
-        onCardClicked?.Invoke(_card);
-    }
+    public void SendCardInfo(){
+        Debug.Log("TRYING TO SEND" + _card.cardName);
+        GameManager.Instance.SelectCardPlayer(_card); }
 }
