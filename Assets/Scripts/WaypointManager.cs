@@ -40,7 +40,7 @@ public class WaypointManager : Singleton<WaypointManager>
 
         return Points[0].position;
     }
-    private void RecalculateLengths()
+    public void RecalculateLengths()
     {
         _segmentLengths.Clear();
         _totalLength = 0;
@@ -57,7 +57,7 @@ public class WaypointManager : Singleton<WaypointManager>
             _totalLength += length;
         }
     }
-    private void Start() => RecalculateLengths();
+   
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.orange;
