@@ -107,19 +107,24 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator ApplyEffectsRoutine(CarController player,CarController enemy,Card playerCard, Card enemyCard , CarController playerTarget, CarController enemyTarget) 
     {
+        if (playerCard != null) { 
         ShootAbilityFX(playerCard, playerTarget,player);
 
         yield return new WaitForSeconds(2.5f);
 
-        ShootAbilityFX(enemyCard, enemyTarget,enemy);
+        }
+        if (enemyCard != null)
+        {
+            ShootAbilityFX(enemyCard, enemyTarget, enemy);
 
-        yield return new WaitForSeconds(2.5f);
-
+            yield return new WaitForSeconds(2.5f);
+        }
         TryEndFight();
     }
 
     private void ShootAbilityFX(Card card, CarController target, CarController caster)
     {
+        if (card == null || target == null || caster == null) return;
         caster.Movement.ModelTransform.DOPunchScale(Vector3.one * 0.3f, 0.4f, 5, 0.5f);
         GameObject fx = GetEffectPrefab(card.Effect);
         if (fx == null) return;

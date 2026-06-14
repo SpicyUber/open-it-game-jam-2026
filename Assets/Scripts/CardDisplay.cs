@@ -42,6 +42,8 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private void OnDisable()
     {
         rectTransform.DOKill();
+        rectTransform.DOAnchorPos(originalPos, 0.15f)
+            .SetEase(Ease.OutQuad);
     }
 
     private void OnEnable()
@@ -77,8 +79,9 @@ public class CardDisplay : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        rectTransform.DOKill();
-        rectTransform.DOAnchorPos(originalPos, 0.15f)
+        
+
+        rectTransform.DOAnchorPos(originalPos, 0.15f).SetDelay(0.25f)
             .SetEase(Ease.OutQuad);
     }
 
