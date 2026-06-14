@@ -123,10 +123,57 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4125284696088122076, guid: b8d3483fc2d81034cbb032b1065cf06d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8986601158608342060}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3805660014689761578, guid: b8d3483fc2d81034cbb032b1065cf06d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3506348479082389712}
+    - targetCorrespondingSourceObject: {fileID: 3805660014689761578, guid: b8d3483fc2d81034cbb032b1065cf06d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8217266124668096163}
   m_SourcePrefab: {fileID: 100100000, guid: b8d3483fc2d81034cbb032b1065cf06d, type: 3}
 --- !u!4 &130715439481934373 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4125284696088122076, guid: b8d3483fc2d81034cbb032b1065cf06d, type: 3}
   m_PrefabInstance: {fileID: 4102656582902006009}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &882701070335703507 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3805660014689761578, guid: b8d3483fc2d81034cbb032b1065cf06d, type: 3}
+  m_PrefabInstance: {fileID: 4102656582902006009}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3506348479082389712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882701070335703507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f0461afe9be1b94c84a187d0e66b61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnChange:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8217266124668096163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882701070335703507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3b5ad43fa7f674583cfc266337d40b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnChange:
+    m_PersistentCalls:
+      m_Calls: []

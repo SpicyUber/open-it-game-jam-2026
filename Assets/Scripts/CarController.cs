@@ -1,4 +1,6 @@
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CarMovement))]
@@ -8,10 +10,21 @@ public class CarController : MonoBehaviour
     private CarMovement _carMovement;
     private EffectPlayer _effectPlayer;
 
+    public PlayerFuel Fuel;
+    public PlayerNitro Nitro;
+
+    [SerializeField]
+    Card[] enemyAbilites;
+
+    public Card RandomAbility()
+    {
+        return enemyAbilites[UnityEngine.Random.Range(0, enemyAbilites.Length)];
+    }
+
     public EffectPlayer EffectPlayer => _effectPlayer;
 
     private bool _moving = false;
-    
+
     private int _alignment = 0;
 
     [SerializeField]
@@ -24,7 +37,7 @@ public class CarController : MonoBehaviour
         _rail = GetComponentInParent<Rail>();
         _carMovement = GetComponent<CarMovement>();
         _effectPlayer = GetComponent<EffectPlayer>();
-      // MoveLeft();
+        // MoveLeft();
     }
 
     public void HideGrid() => _gridLogic.Hide();
@@ -50,7 +63,7 @@ public class CarController : MonoBehaviour
         if (WaypointManager.Instance == null) return;
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(
-        WaypointManager.Instance.GetPosition(_rail.GetT()),0.75f);
+        WaypointManager.Instance.GetPosition(_rail.GetT()), 0.75f);
     }
 
     public void SetT(float t) => _rail.SetT(t);
@@ -64,11 +77,39 @@ public class CarController : MonoBehaviour
     }
 
     public void MoveRight()
-    { _moving = true;
+    {
+        _moving = true;
         Debug.Log("MOVE RIGHT!");
         if (_alignment > 0) return;
         _alignment++;
         _carMovement.Move(_carMovement.CalculateMove(Vector3Int.right), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
+    }
+
+    public bool IsHit(List<TargetLane> lanes)
+    {
+        bool found = false;
+
+        foreach (var lane in lanes)
+            if ((int)lane == _alignment)
+                found = true;
+
+        return found;
+
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Fuel.ModifyFuel(-damage);
+    }
+
+    //returns true if nitro spent
+    public bool SpendNitro(int nitro)
+    {
+        if (Nitro.CurrentFuel <= 0) return false;
+
+        Nitro.ModifyNitro(-nitro);
+
+        return true;
     }
 
     public void Stay() { _moving = true; Debug.Log("STAY!"); GameManager.Instance.EndMoveTurn(); _moving = false; }
@@ -78,7 +119,7 @@ public class CarController : MonoBehaviour
         _rail.Freeze();
     }
 
-    public void SpeedUp(int speedMult) => _rail.VisualSpeed = Rail.BaseVisualSpeed *  speedMult;
+    public void SpeedUp(int speedMult) => _rail.VisualSpeed = Rail.BaseVisualSpeed * speedMult;
 
     public void SpeedReset() => _rail.VisualSpeed = Rail.BaseVisualSpeed;
 
@@ -88,4 +129,14 @@ public class CarController : MonoBehaviour
     }
 
     public float GetT() => _rail.GetT();
+
+    internal void AddNitro(int nitroMod)
+    {
+        Nitro.ModifyNitro(nitroMod);
+    }
+
+    internal void AddFuel(int fuelMod)
+    {
+        Fuel.ModifyFuel(fuelMod);
+    }
 }

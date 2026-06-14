@@ -585,10 +585,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7b23bd279b79614a9e452bcd874f05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardDisplay
-  cardImage: {fileID: 0}
-  cardName: {fileID: 0}
-  effectDescription: {fileID: 0}
-  nitroPoints: {fileID: 0}
+  cardImage: {fileID: 7368796821253624581}
+  cardName: {fileID: 3010574221657921770}
+  effectDescription: {fileID: 71814914253523093}
+  nitroPoints: {fileID: 4812790263473280100}
   onCardClicked:
     m_PersistentCalls:
       m_Calls: []

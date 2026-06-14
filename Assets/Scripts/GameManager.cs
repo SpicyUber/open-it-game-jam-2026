@@ -9,12 +9,20 @@ public class GameManager : Singleton<GameManager>
 {
     public List<CarController> Cars;
 
+    public List<Card> Deck;
+
+    public Card[] Hand;
+
+    public CardDisplay[] CardDisplays;
+
     public CarController Player;
     private GameState _state = GameState.Start;
 
     public UnityEvent<int> StartCountdownChanged;
 
     private int moveTurnCount = 2;
+
+    public Card PlayerSelectedCard = null;
 
     public GameObject CardUI, MoveUI;
 
@@ -34,8 +42,9 @@ public class GameManager : Singleton<GameManager>
             Cars.RemoveAt(randIndex);
         }
 
-       
+
         MoveUI.SetActive(false);
+        CardUI.SetActive(false);
 
         Player.Freeze();
         Player.HideGrid();
@@ -51,11 +60,99 @@ public class GameManager : Singleton<GameManager>
         }
 
         StartCoroutine(StartGame());
+
+
     }
 
     void Update()
     {
         UpdateAccordingToState();
+    }
+
+    void RefillCards()
+    {
+        if(Hand == null)
+             Hand = new Card[4];
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (Hand[i] == null)
+            {
+                var card = Deck[0];
+                Deck.RemoveAt(0);
+                Hand[i] = card;
+            }
+        }
+        
+        for (int i = 0; i < CardDisplays.Length; i++)
+        {
+            
+            CardDisplays[i].Init(Hand[i]);
+        }
+    }
+
+    void UseCard(Card card)
+    {
+        for (int i = 0; i < Hand.Length; i++)
+        {
+            if (Hand[i] == card) { UseCardAbility(card, _enemyQueue.Peek(),Player ); Hand[i] = null; }
+        }
+
+        UseCardAbility(_enemyQueue.Peek().RandomAbility(), Player, _enemyQueue.Peek());
+    }
+
+    private void UseCardAbility(Card card, CarController target, CarController caster)
+    {
+        Debug.Log($"USED {card.cardName} | Type: {card.cardType}");
+
+        switch (card.cardType)
+        {
+            case CardType.Attack:
+                ApplyAttack(card,target);
+                break;
+            case CardType.Defence:
+                ApplyDefence(card,target);
+                break;
+            case CardType.Buff:
+                ApplyBuff(card,caster, isDebuff: false);
+                break;
+            case CardType.Debuff:
+                ApplyBuff(card,target, isDebuff: true);
+                break;
+        }
+    }
+
+    private void ApplyAttack(Card card, CarController target)
+    {
+            // TODO: Replace with actual fuel/health system call
+            Debug.Log($"Attacking {target.gameObject.name} for {card.damage} damage");
+            target.TakeDamage(card.damage);
+    }
+
+    private void ApplyDefence(Card card , CarController target)
+    {
+        
+        
+    }
+
+    private void ApplyBuff(Card card, CarController target, bool isDebuff)
+    {
+        int nitroMod = isDebuff ? -card.nitroBuff : card.nitroBuff;
+        int fuelMod = isDebuff ? -card.fuelBuff : card.fuelBuff;
+
+
+        // Defence typically targets self — adjust if your design differs
+        Debug.Log($"Defending — fuel buff: {card.fuelBuff} and nitro buff {card.nitroBuff}");
+        
+        target.AddNitro(nitroMod);
+        target.AddFuel(fuelMod);
+
+    }
+
+    public void SelectCardPlayer(Card card)
+    {
+        PlayerSelectedCard = card;
+        TransitionTo(GameState.PickMove);
     }
 
     public void EndMoveTurn()
@@ -64,7 +161,7 @@ public class GameManager : Singleton<GameManager>
 
         if (moveTurnCount == 2)
         {
-            CardUI.SetActive(false);
+            MoveUI.SetActive(false);
             var enemy = _enemyQueue.Peek();
             float r = UnityEngine.Random.value;
 
@@ -104,12 +201,13 @@ public class GameManager : Singleton<GameManager>
                 }
                 break;
             case GameState.PickCard:
-                TransitionTo(GameState.PickMove);
+                
+
                 break;
         }
     }
 
-    
+
     System.Collections.IEnumerator StartGame()
     {
         int countdown = 3;
@@ -168,13 +266,18 @@ public class GameManager : Singleton<GameManager>
                 break;
             case GameState.PickCard:
                 CardUI.SetActive(true);
-                
-                
+                RefillCards();
+
+
                 break;
             case GameState.PickMove:
+                
                 moveTurnCount = 2;
                 MoveUI.SetActive(true);
                 break;
+            case GameState.TurnResult:
+                UseCard(PlayerSelectedCard);
+                    break;
         }
 
         _state = state;

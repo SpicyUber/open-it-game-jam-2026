@@ -11,7 +11,7 @@ public enum CardType
 
 public enum TargetLane
 {
-    Left,
+    Left = -1,
     Middle,
     Right
 }
