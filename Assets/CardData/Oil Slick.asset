@@ -15,9 +15,9 @@ MonoBehaviour:
   cardImage: {fileID: 21300000, guid: 0fa0073375246fb4aaf82e055f96b4ed, type: 3}
   cardName: Oil Slick
   cardType: 0
-  effectDescription: Slippery when wet. 10 damage points on the left lane.
+  effectDescription: Slippery when wet. 25 damage points on the left lane.
   nitroPoints: 0
-  damage: 10
+  damage: 25
   nitroBuff: 0
   fuelBuff: 0
   targetLanes: 00000000

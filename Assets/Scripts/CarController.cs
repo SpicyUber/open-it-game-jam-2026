@@ -118,7 +118,8 @@ public class CarController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Fuel.ModifyFuel(-damage);
+        foreach (var f in GetComponents<PlayerFuel>())
+            f.ModifyFuel(-damage);
     }
 
     //returns true if nitro spent
@@ -126,7 +127,8 @@ public class CarController : MonoBehaviour
     {
         if (Nitro.CurrentNitro < nitro) return false;
 
-        Nitro.ModifyNitro(-nitro);
+        foreach (var n in GetComponents<PlayerNitro>())
+            n.ModifyNitro(-nitro);
 
         return true;
     }
@@ -158,12 +160,14 @@ public class CarController : MonoBehaviour
 
     internal void AddNitro(int nitroMod)
     {
-        Nitro.ModifyNitro(nitroMod);
+        foreach (var n in GetComponents<PlayerNitro>())
+            n.ModifyNitro(nitroMod);
     }
 
     internal void AddFuel(int fuelMod)
     {
-        Fuel.ModifyFuel(fuelMod);
+        foreach (var f in GetComponents<PlayerFuel>())
+            f.ModifyFuel(fuelMod);
     }
 
     internal void ExplodeYourself()

@@ -22,6 +22,6 @@ public class ValueSliderChanger : MonoBehaviour
         if (Slider == null) return;
 
         Slider.DOKill();
-        Slider.DOValue(value, 1f);
+        Slider.value = value;
     }
 }

@@ -15,9 +15,9 @@ MonoBehaviour:
   cardImage: {fileID: 0}
   cardName: Spike
   cardType: 0
-  effectDescription: Flat tire, flat chance. 30 damage points on the right lane.
-  nitroPoints: 15
-  damage: 30
+  effectDescription: Flat tire, flat chance. 45 damage points on the right lane.
+  nitroPoints: 10
+  damage: 45
   nitroBuff: 0
   fuelBuff: 0
   targetLanes: 02000000

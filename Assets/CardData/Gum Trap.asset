@@ -15,9 +15,9 @@ MonoBehaviour:
   cardImage: {fileID: 21300000, guid: 93e41c09631972d47b4a0e2fdbf9a87c, type: 3}
   cardName: Gum Trap
   cardType: 0
-  effectDescription: Sticky situation. 20 damage points on the right and middle lane.
+  effectDescription: Sticky situation. 35 damage points on the right and middle lane.
   nitroPoints: 10
-  damage: 20
+  damage: 35
   nitroBuff: 0
   fuelBuff: 0
   targetLanes: 0100000002000000

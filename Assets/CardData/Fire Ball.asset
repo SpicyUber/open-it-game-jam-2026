@@ -15,9 +15,9 @@ MonoBehaviour:
   cardImage: {fileID: 0}
   cardName: Fire Ball
   cardType: 0
-  effectDescription: It's hot in here. 20 damage points on all lanes.
-  nitroPoints: 30
-  damage: 20
+  effectDescription: It's hot in here. 35 damage points on all lanes.
+  nitroPoints: 20
+  damage: 35
   nitroBuff: 0
   fuelBuff: 0
   targetLanes: 000000000100000002000000

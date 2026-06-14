@@ -15,10 +15,10 @@ MonoBehaviour:
   cardImage: {fileID: 21300000, guid: 09925abeba294e441a7a3225b3a44210, type: 3}
   cardName: Smoke Bomb
   cardType: 0
-  effectDescription: Can't fight what you can't see. 10 damage points on the middle
+  effectDescription: Can't fight what you can't see. 25 damage points on the middle
     and left lane.
   nitroPoints: 0
-  damage: 10
+  damage: 25
   nitroBuff: 0
   fuelBuff: 0
   targetLanes: 0000000001000000
