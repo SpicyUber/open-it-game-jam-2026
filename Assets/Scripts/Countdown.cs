@@ -4,7 +4,7 @@ using UnityEngine;
 public class Countdown : MonoBehaviour
 {
     TextMeshProUGUI _tmp;
-    void Start()
+    void Awake()
     {
         _tmp = GetComponent<TextMeshProUGUI>();
     }
