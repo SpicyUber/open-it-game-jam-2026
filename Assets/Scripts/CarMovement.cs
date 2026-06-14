@@ -6,9 +6,9 @@ public class CarMovement : MonoBehaviour
 {
     [SerializeField]
     private Grid _grid;
+
     [SerializeField]
     public Transform PositionTransform, ModelTransform;
-   
 
     public Vector3 CalculateMove(Vector3Int dir) 
     {

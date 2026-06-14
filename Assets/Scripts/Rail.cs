@@ -7,7 +7,7 @@ public class Rail : MonoBehaviour
 {
     float _t = 0;
     bool _stopped = false;
-    public const float BaseVisualSpeed = 24f;
+    public const float BaseVisualSpeed = 15f;
     public float VisualSpeed = BaseVisualSpeed;
 
     private void Update()

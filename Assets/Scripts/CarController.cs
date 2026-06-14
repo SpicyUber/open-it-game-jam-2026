@@ -8,20 +8,23 @@ public class CarController : MonoBehaviour
     private CarMovement _carMovement;
     private EffectPlayer _effectPlayer;
 
+    public EffectPlayer EffectPlayer => _effectPlayer;
+
+    private bool _moving = false;
+    
+    private int _alignment = 0;
+
     [SerializeField]
     GridDisplayLogic _gridLogic;
 
     private Rail _rail;
 
-    [SerializeField]
-    private BaseStatsSO _baseStats;
-
-    public void Start()
+    public void Awake()
     {
         _rail = GetComponentInParent<Rail>();
         _carMovement = GetComponent<CarMovement>();
         _effectPlayer = GetComponent<EffectPlayer>();
-       // MoveLeft();
+      // MoveLeft();
     }
 
     public void HideGrid() => _gridLogic.Hide();
@@ -30,8 +33,6 @@ public class CarController : MonoBehaviour
 
     public void Update()
     {
-        
-
         Quaternion targetRot = WaypointManager.Instance.GetRotation(_rail.GetT());
 
         Quaternion lerpRot = Quaternion.Slerp(
@@ -55,13 +56,22 @@ public class CarController : MonoBehaviour
     public void SetT(float t) => _rail.SetT(t);
     public void MoveLeft()
     {
-        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.left), 1f, () => { _effectPlayer.PlayDustCloud(); });
+        _moving = true;
+        Debug.Log("MOVE LEFT!");
+        if (_alignment < 0) return;
+        _alignment--;
+        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.left), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
     }
 
     public void MoveRight()
-    {
-        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.right), 1f, () => { _effectPlayer.PlayDustCloud(); });
+    { _moving = true;
+        Debug.Log("MOVE RIGHT!");
+        if (_alignment > 0) return;
+        _alignment++;
+        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.right), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
     }
+
+    public void Stay() { _moving = true; Debug.Log("STAY!"); GameManager.Instance.EndMoveTurn(); _moving = false; }
 
     public void Freeze()
     {
