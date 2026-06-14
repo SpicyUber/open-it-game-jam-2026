@@ -13,6 +13,9 @@ public class CarController : MonoBehaviour
     public PlayerFuel Fuel;
     public PlayerNitro Nitro;
 
+    public AudioClip changeLaneSound;
+    private AudioSource audioSource;
+
     [SerializeField]
     Card[] enemyAbilites;
 
@@ -38,6 +41,8 @@ public class CarController : MonoBehaviour
         _carMovement = GetComponent<CarMovement>();
         _effectPlayer = GetComponent<EffectPlayer>();
         // MoveLeft();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void HideGrid() => _gridLogic.Hide();
@@ -74,6 +79,9 @@ public class CarController : MonoBehaviour
         if (_alignment < 0) return;
         _alignment--;
         _carMovement.Move(_carMovement.CalculateMove(Vector3Int.left), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
+
+        if (changeLaneSound != null)
+            audioSource.PlayOneShot(changeLaneSound);
     }
 
     public void MoveRight()
@@ -83,6 +91,9 @@ public class CarController : MonoBehaviour
         if (_alignment > 0) return;
         _alignment++;
         _carMovement.Move(_carMovement.CalculateMove(Vector3Int.right), 1f, () => { _effectPlayer.PlayDustCloud(); GameManager.Instance.EndMoveTurn(); _moving = false; });
+
+        if (changeLaneSound != null)
+            audioSource.PlayOneShot(changeLaneSound);
     }
 
     public bool IsHit(List<TargetLane> lanes)
