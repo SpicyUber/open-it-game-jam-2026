@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5684b793a4c6749adb7e382db1f101, type: 3}
   m_Name: Coin Flip
   m_EditorClassIdentifier: Assembly-CSharp::WildCard
-  cardImage: {fileID: 0}
+  cardImage: {fileID: 21300000, guid: df5dbadca48fa494ebc8980062121f04, type: 3}
   cardName: Coin Flip
   cardType: 4
   effectDescription: "Heads I win, tails you lose. 50/50 \u2013 opponent loses 75
@@ -21,7 +21,9 @@ MonoBehaviour:
   damage: 0
   nitroBuff: 0
   fuelBuff: 0
-  targetLanes: 000000000100000002000000
+  targetLanes: 0000000001000000ffffffff
+  Effect: 0
+  Color: {r: 0, g: 0, b: 0, a: 0}
   percentageToHappen: 50
   opponentFuelDebuff: 75
   opponentNitroDebuff: 0

@@ -28,6 +28,7 @@ public class GameManager : Singleton<GameManager>
     public Card PlayerSelectedCard = null;
 
     public GameObject CardUI, MoveUI;
+    public UnityEngine.UI.Slider EnemyFuelSlider;
 
     private Queue<CarController> _enemyQueue;
     private bool BehindNextEnemy => (_enemyQueue.Peek().GetT() - Player.GetT()) * (SpeedBiggerThanNextEnemy ? 1 : -1) < 5f;
@@ -42,6 +43,13 @@ public class GameManager : Singleton<GameManager>
             int randIndex = UnityEngine.Random.Range(0, Cars.Count);
             _enemyQueue.Enqueue(Cars[randIndex]);
             Cars.RemoveAt(randIndex);
+        }
+
+        if (EnemyFuelSlider == null)
+        {
+            GameObject enemyFuelObj = GameObject.Find("EnemyFuel");
+            if (enemyFuelObj != null)
+                EnemyFuelSlider = enemyFuelObj.GetComponent<UnityEngine.UI.Slider>();
         }
 
         MoveUI.SetActive(false);
@@ -59,6 +67,13 @@ public class GameManager : Singleton<GameManager>
             car.Freeze();
             car.HideGrid();
             car.EffectPlayer.ToggleDustTrailOff();
+            
+            car.Fuel.OnChange.AddListener((val) => {
+                if (_enemyQueue.Count > 0 && car == _enemyQueue.Peek() && EnemyFuelSlider != null)
+                {
+                    EnemyFuelSlider.value = val;
+                }
+            });
         }
 
         StartCoroutine(StartGame());
@@ -239,16 +254,16 @@ public class GameManager : Singleton<GameManager>
         switch (card.cardType)
         {
             case CardType.Attack:
-                ApplyAttack(card, target);
+                ApplyAttack(card, target, caster);
                 break;
             case CardType.Defence:
                 ApplyDefence(card, target);
                 break;
             case CardType.Buff:
-                ApplyBuff(card, caster, isDebuff: false);
+                ApplyBuff(card, caster, isDebuff: false, caster);
                 break;
             case CardType.Debuff:
-                ApplyBuff(card, target, isDebuff: true);
+                ApplyBuff(card, target, isDebuff: true, caster);
                 break;
             case CardType.WildCard:
                 ApplyWildCard(card, target, caster);
@@ -258,13 +273,19 @@ public class GameManager : Singleton<GameManager>
         return card;
     }
 
-    private void ApplyAttack(Card card, CarController target)
+    private void ApplyAttack(Card card, CarController target, CarController caster)
     {
-        Debug.Log($"Attacking {target.gameObject.name} for {card.damage} damage");
+        int damage = card.damage;
+        if (caster != Player && target == Player)
+        {
+            damage = Mathf.CeilToInt(damage * 0.5f);
+        }
+
+        Debug.Log($"Attacking {target.gameObject.name} for {damage} damage");
 
         if (target.IsHit(card.targetLanes))
         {
-            target.TakeDamage(card.damage);
+            target.TakeDamage(damage);
             Debug.Log($"Attacking hit");
         }
         else
@@ -277,12 +298,18 @@ public class GameManager : Singleton<GameManager>
     {
     }
 
-    private void ApplyBuff(Card card, CarController target, bool isDebuff)
+    private void ApplyBuff(Card card, CarController target, bool isDebuff, CarController caster)
     {
         int nitroMod = isDebuff ? -card.nitroBuff : card.nitroBuff;
         int fuelMod = isDebuff ? -card.fuelBuff : card.fuelBuff;
 
-        Debug.Log($"Defending — fuel buff: {card.fuelBuff} and nitro buff {card.nitroBuff}");
+        if (isDebuff && caster != Player && target == Player)
+        {
+            nitroMod = -Mathf.CeilToInt(card.nitroBuff * 0.5f);
+            fuelMod = -Mathf.CeilToInt(card.fuelBuff * 0.5f);
+        }
+
+        Debug.Log($"Defending — fuel buff: {fuelMod} and nitro buff {nitroMod}");
 
         target.AddNitro(nitroMod);
         target.AddFuel(fuelMod);
@@ -297,6 +324,12 @@ public class GameManager : Singleton<GameManager>
         CarController affectedCar = success ? target : caster;
         int fuelDamage = success ? wildCard.opponentFuelDebuff : wildCard.playerFuelDebuff;
         int nitroDamage = success ? wildCard.opponentNitroDebuff : wildCard.playerNitroDebuff;
+
+        if (caster != Player && affectedCar == Player)
+        {
+            fuelDamage = Mathf.CeilToInt(fuelDamage * 0.5f);
+            nitroDamage = Mathf.CeilToInt(nitroDamage * 0.5f);
+        }
 
         affectedCar.AddFuel(-fuelDamage);
         affectedCar.AddNitro(-nitroDamage);
@@ -351,6 +384,10 @@ private IEnumerator WaitForMovesThenResolve()
                 {
                     _enemyQueue.Peek().ShowGrid();
                     Player.ShowGrid();
+                    
+                    if (EnemyFuelSlider != null)
+                        EnemyFuelSlider.value = (int)_enemyQueue.Peek().Fuel.CurrentFuel;
+                        
                     TransitionTo(GameState.PickCard);
                 }
                 break;
@@ -426,6 +463,9 @@ private IEnumerator WaitForMovesThenResolve()
             case GameState.TurnResult:
                 UseCard(PlayerSelectedCard);
                 return;
+            case GameState.Victory:
+                UnityEngine.SceneManagement.SceneManager.LoadScene("WinScene");
+                break;
         }
 
         _state = state;

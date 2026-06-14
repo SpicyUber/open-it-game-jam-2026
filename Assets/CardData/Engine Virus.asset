@@ -22,4 +22,4 @@ MonoBehaviour:
   fuelBuff: 25
   targetLanes: 0000000001000000ffffffff
   Effect: 0
-  Color: {r: 0.066278934, g: 1, b: 0, a: 0}
+  Color: {r: 0, g: 0, b: 0, a: 0}
