@@ -7,6 +7,8 @@ using UnityEngine;
 [RequireComponent(typeof(EffectPlayer))]
 public class CarController : MonoBehaviour
 {
+    [SerializeField] private GameObject explosionPrefab;
+
     private CarMovement _carMovement;
     private EffectPlayer _effectPlayer;
 
@@ -154,6 +156,9 @@ public class CarController : MonoBehaviour
     internal void ExplodeYourself()
     {
         //TO DO EXPLODE ENEMY
+        Vector3 enemyPos = this.transform.position;
+        GameObject explosion = Instantiate(this.explosionPrefab, enemyPos, Quaternion.identity);
+        Destroy(explosion, 3f);
         Destroy(this.gameObject);
     }
 }

@@ -201,6 +201,10 @@ PrefabInstance:
       value: EnemyThree
       objectReference: {fileID: 0}
     - target: {fileID: 6455085312453020281, guid: 15e2d34cbf8eeba479a0676933a1dc80, type: 3}
+      propertyPath: explosionPrefab
+      value: 
+      objectReference: {fileID: 191186, guid: 079954accd64b32419ec069129c81273, type: 3}
+    - target: {fileID: 6455085312453020281, guid: 15e2d34cbf8eeba479a0676933a1dc80, type: 3}
       propertyPath: enemyAbilites.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -4037,6 +4041,10 @@ PrefabInstance:
       value: EnemyOne
       objectReference: {fileID: 0}
     - target: {fileID: 6455085312453020281, guid: 376a3b18f3f6c7949a547675874f0ce5, type: 3}
+      propertyPath: explosionPrefab
+      value: 
+      objectReference: {fileID: 191186, guid: 079954accd64b32419ec069129c81273, type: 3}
+    - target: {fileID: 6455085312453020281, guid: 376a3b18f3f6c7949a547675874f0ce5, type: 3}
       propertyPath: enemyAbilites.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -5961,6 +5969,10 @@ PrefabInstance:
       value: EnemyTwo
       objectReference: {fileID: 0}
     - target: {fileID: 6455085312453020281, guid: c9231f823018ec345a22df9bf68f7bb9, type: 3}
+      propertyPath: explosionPrefab
+      value: 
+      objectReference: {fileID: 191186, guid: 079954accd64b32419ec069129c81273, type: 3}
+    - target: {fileID: 6455085312453020281, guid: c9231f823018ec345a22df9bf68f7bb9, type: 3}
       propertyPath: enemyAbilites.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -6344,6 +6356,10 @@ PrefabInstance:
       propertyPath: changeLaneSound
       value: 
       objectReference: {fileID: 8300000, guid: ed4c7f2cea8840047a724e3eac0cfaf0, type: 3}
+    - target: {fileID: 3562489566008841330, guid: ad416af5ba876ff4380b156a72ab2d7c, type: 3}
+      propertyPath: explosionPrefab
+      value: 
+      objectReference: {fileID: 191186, guid: 079954accd64b32419ec069129c81273, type: 3}
     - target: {fileID: 8217266124668096163, guid: ad416af5ba876ff4380b156a72ab2d7c, type: 3}
       propertyPath: OnChange.m_PersistentCalls.m_Calls.Array.size
       value: 1
