@@ -1864,7 +1864,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1993aaeffd28bec4baefbb3b330c34d8, type: 2}
   - {fileID: 11400000, guid: 3f1f3b87dd71565419e78725486b442a, type: 2}
   - {fileID: 11400000, guid: 0117e19bbdbc612499c6be3e921952f1, type: 2}
-  Hand: []
+  Hand:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   CardDisplays:
   - {fileID: 938991285}
   - {fileID: 1916775604}

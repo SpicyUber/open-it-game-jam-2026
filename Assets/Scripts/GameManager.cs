@@ -71,8 +71,8 @@ public class GameManager : Singleton<GameManager>
 
     void RefillCards()
     {
-        if(Hand == null)
-             Hand = new Card[4];
+        if (Hand == null)
+            Hand = new Card[4];
 
         for (int i = 0; i < 4; i++)
         {
@@ -83,10 +83,10 @@ public class GameManager : Singleton<GameManager>
                 Hand[i] = card;
             }
         }
-        
+
         for (int i = 0; i < CardDisplays.Length; i++)
         {
-            
+
             CardDisplays[i].Init(Hand[i]);
         }
     }
@@ -95,7 +95,7 @@ public class GameManager : Singleton<GameManager>
     {
         for (int i = 0; i < Hand.Length; i++)
         {
-            if (Hand[i] == card) { UseCardAbility(card, _enemyQueue.Peek(),Player ); Hand[i] = null; }
+            if (Hand[i] == card) { UseCardAbility(card, _enemyQueue.Peek(), Player); Hand[i] = null; }
         }
 
         UseCardAbility(_enemyQueue.Peek().RandomAbility(), Player, _enemyQueue.Peek());
@@ -108,31 +108,41 @@ public class GameManager : Singleton<GameManager>
         switch (card.cardType)
         {
             case CardType.Attack:
-                ApplyAttack(card,target);
+                ApplyAttack(card, target);
                 break;
             case CardType.Defence:
-                ApplyDefence(card,target);
+                ApplyDefence(card, target);
                 break;
             case CardType.Buff:
-                ApplyBuff(card,caster, isDebuff: false);
+                ApplyBuff(card, caster, isDebuff: false);
                 break;
             case CardType.Debuff:
-                ApplyBuff(card,target, isDebuff: true);
+                ApplyBuff(card, target, isDebuff: true);
                 break;
         }
     }
 
     private void ApplyAttack(Card card, CarController target)
     {
-            // TODO: Replace with actual fuel/health system call
-            Debug.Log($"Attacking {target.gameObject.name} for {card.damage} damage");
+        // TODO: Replace with actual fuel/health system call
+        Debug.Log($"Attacking {target.gameObject.name} for {card.damage} damage");
+
+
+        if (target.IsHit(card.targetLanes))
+        {
             target.TakeDamage(card.damage);
+            Debug.Log($"Attacking hit");
+        }
+        else Debug.Log($"Attacking missed");
+
+
+
     }
 
-    private void ApplyDefence(Card card , CarController target)
+    private void ApplyDefence(Card card, CarController target)
     {
-        
-        
+
+
     }
 
     private void ApplyBuff(Card card, CarController target, bool isDebuff)
@@ -140,10 +150,9 @@ public class GameManager : Singleton<GameManager>
         int nitroMod = isDebuff ? -card.nitroBuff : card.nitroBuff;
         int fuelMod = isDebuff ? -card.fuelBuff : card.fuelBuff;
 
-
         // Defence typically targets self — adjust if your design differs
         Debug.Log($"Defending — fuel buff: {card.fuelBuff} and nitro buff {card.nitroBuff}");
-        
+
         target.AddNitro(nitroMod);
         target.AddFuel(fuelMod);
 
@@ -201,7 +210,7 @@ public class GameManager : Singleton<GameManager>
                 }
                 break;
             case GameState.PickCard:
-                
+
 
                 break;
         }
@@ -271,13 +280,13 @@ public class GameManager : Singleton<GameManager>
 
                 break;
             case GameState.PickMove:
-                
+
                 moveTurnCount = 2;
                 MoveUI.SetActive(true);
                 break;
             case GameState.TurnResult:
                 UseCard(PlayerSelectedCard);
-                    break;
+                break;
         }
 
         _state = state;
