@@ -31,7 +31,7 @@ public class GameManager : Singleton<GameManager>
     public UnityEngine.UI.Slider EnemyFuelSlider;
 
     private Queue<CarController> _enemyQueue;
-    private bool BehindNextEnemy => (_enemyQueue.Peek().GetT() - Player.GetT()) * (SpeedBiggerThanNextEnemy ? 1 : -1) < 5f;
+    private bool BehindNextEnemy => (_enemyQueue.Peek().GetT() - Player.GetT()) * (SpeedBiggerThanNextEnemy ? 1 : -1) < 5.25f;
     private bool SpeedBiggerThanNextEnemy => true;
 
     void Start()
@@ -128,7 +128,7 @@ public class GameManager : Singleton<GameManager>
         {
             Vector3 basePos = WaypointManager.Instance.GetPosition(target.GetT());
 
-            Vector3 laneOffset = 6* ((int)lane - 1) * (WaypointManager.Instance.GetRotation(target.GetT()) * Vector3.right);
+            Vector3 laneOffset = 6* ((int)lane) * (WaypointManager.Instance.GetRotation(target.GetT()) * Vector3.right);
             Vector3 spawnPos = basePos + laneOffset;
 
             GameObject instance = Instantiate(fx, spawnPos, Quaternion.identity);
