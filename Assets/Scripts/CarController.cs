@@ -105,7 +105,7 @@ public class CarController : MonoBehaviour
     //returns true if nitro spent
     public bool SpendNitro(int nitro)
     {
-        if (Nitro.CurrentFuel <= 0) return false;
+        if (Nitro.CurrentNitro < nitro) return false;
 
         Nitro.ModifyNitro(-nitro);
 
@@ -138,5 +138,11 @@ public class CarController : MonoBehaviour
     internal void AddFuel(int fuelMod)
     {
         Fuel.ModifyFuel(fuelMod);
+    }
+
+    internal void ExplodeYourself()
+    {
+        //TO DO EXPLODE ENEMY
+        Destroy(this.gameObject);
     }
 }

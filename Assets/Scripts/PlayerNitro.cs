@@ -7,7 +7,7 @@ public class PlayerNitro : MonoBehaviour
 
     public UnityEvent OnDeath;
     public UnityEvent<int> OnChange;
-    public float CurrentFuel => _currentFuel;
+    public float CurrentNitro => _currentFuel;
 
     public void Start() => ModifyNitro(100f);
     public void ModifyNitro(float v)
