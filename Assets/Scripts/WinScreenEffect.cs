@@ -5,6 +5,6 @@ public class WinScreenEffect : MonoBehaviour
 {
     public void OnScreenClick()
     {
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("MainMenu");
     }
 }
