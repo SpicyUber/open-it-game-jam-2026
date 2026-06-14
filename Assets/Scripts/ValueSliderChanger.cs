@@ -9,6 +9,7 @@ public class ValueSliderChanger : MonoBehaviour
     UnityEngine.UI.Slider Slider;
     public void ChangeValue(int value) 
     {
+        Slider.DOKill();
         Slider.DOValue(value, 1f);
     }
 }

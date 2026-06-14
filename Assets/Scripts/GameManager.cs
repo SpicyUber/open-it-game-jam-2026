@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Unity.VisualScripting;
@@ -10,27 +11,22 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
     public List<CarController> Cars;
-
     public List<Card> Deck;
-
     public Card[] Hand;
-
     public CardDisplay[] CardDisplays;
-
     public CarController Player;
+
     private GameState _state = GameState.Start;
 
     public UnityEvent<int> StartCountdownChanged;
 
     private int moveTurnCount = 2;
-
     public Card PlayerSelectedCard = null;
 
     public GameObject CardUI, MoveUI;
 
     private Queue<CarController> _enemyQueue;
     private bool BehindNextEnemy => (_enemyQueue.Peek().GetT() - Player.GetT()) * (SpeedBiggerThanNextEnemy ? 1 : -1) < 5f;
-
     private bool SpeedBiggerThanNextEnemy => true;
 
     void Start()
@@ -44,7 +40,6 @@ public class GameManager : Singleton<GameManager>
             Cars.RemoveAt(randIndex);
         }
 
-
         MoveUI.SetActive(false);
         CardUI.SetActive(false);
 
@@ -52,6 +47,7 @@ public class GameManager : Singleton<GameManager>
         Player.HideGrid();
         Player.EffectPlayer.ToggleDustTrailOff();
         WaypointManager.Instance.RecalculateLengths();
+
         float s = 40f;
         foreach (CarController car in _enemyQueue)
         {
@@ -62,11 +58,9 @@ public class GameManager : Singleton<GameManager>
         }
 
         StartCoroutine(StartGame());
-
-
     }
 
-    void Update()
+    void LateUpdate()
     {
         UpdateAccordingToState();
     }
@@ -88,7 +82,6 @@ public class GameManager : Singleton<GameManager>
 
         for (int i = 0; i < CardDisplays.Length; i++)
         {
-
             CardDisplays[i].Init(Hand[i]);
         }
     }
@@ -97,23 +90,38 @@ public class GameManager : Singleton<GameManager>
     {
         for (int i = 0; i < Hand.Length; i++)
         {
-            if (Hand[i] == card) { UseCardAbility(card, _enemyQueue.Peek(), Player); Hand[i] = null; }
+            if (Hand[i] == card)
+            {
+                UseCardAbility(card, _enemyQueue.Peek(), Player);
+                Hand[i] = null;
+                Deck.Add(card);
+            }
         }
 
         UseCardAbility(_enemyQueue.Peek().RandomAbility(), Player, _enemyQueue.Peek());
+
+        PlayerSelectedCard = null;
 
         TryEndFight();
     }
 
     private void TryEndFight()
     {
+        if (_enemyQueue.Count == 0)
+        {
+            TransitionTo(GameState.Victory);
+            return;
+        }
+
         if (Player.Fuel.CurrentFuel == 0)
-        { SceneManager.LoadScene(0); }
+        {
+            SceneManager.LoadScene(0);
+            return;
+        }
 
         if (_enemyQueue.Peek().Fuel.CurrentFuel == 0)
         {
             var defeatedEnemy = _enemyQueue.Dequeue();
-
             defeatedEnemy.ExplodeYourself();
 
             if (_enemyQueue.Count > 0)
@@ -121,7 +129,10 @@ public class GameManager : Singleton<GameManager>
             else
                 TransitionTo(GameState.Victory);
         }
-
+        else
+        {
+            TransitionTo(GameState.PickCard);
+        }
     }
 
     private void UseCardAbility(Card card, CarController target, CarController caster)
@@ -133,7 +144,6 @@ public class GameManager : Singleton<GameManager>
             Debug.Log("NOT ENOUGH NITRO!!!");
             return;
         }
-
 
         switch (card.cardType)
         {
@@ -150,30 +160,25 @@ public class GameManager : Singleton<GameManager>
                 ApplyBuff(card, target, isDebuff: true);
                 break;
         }
-
     }
 
     private void ApplyAttack(Card card, CarController target)
     {
-        // TODO: Replace with actual fuel/health system call
         Debug.Log($"Attacking {target.gameObject.name} for {card.damage} damage");
-
 
         if (target.IsHit(card.targetLanes))
         {
             target.TakeDamage(card.damage);
             Debug.Log($"Attacking hit");
         }
-        else Debug.Log($"Attacking missed");
-
-
-
+        else
+        {
+            Debug.Log($"Attacking missed");
+        }
     }
 
     private void ApplyDefence(Card card, CarController target)
     {
-
-
     }
 
     private void ApplyBuff(Card card, CarController target, bool isDebuff)
@@ -181,50 +186,45 @@ public class GameManager : Singleton<GameManager>
         int nitroMod = isDebuff ? -card.nitroBuff : card.nitroBuff;
         int fuelMod = isDebuff ? -card.fuelBuff : card.fuelBuff;
 
-        // Defence typically targets self — adjust if your design differs
         Debug.Log($"Defending — fuel buff: {card.fuelBuff} and nitro buff {card.nitroBuff}");
 
         target.AddNitro(nitroMod);
         target.AddFuel(fuelMod);
-
     }
 
     public void SelectCardPlayer(Card card)
     {
+        if (_state != GameState.PickCard) return;
+        if (card == null) return;
+
         PlayerSelectedCard = card;
         TransitionTo(GameState.PickMove);
     }
 
-    public void EndMoveTurn()
-    {
-        if (_state != GameState.PickMove) return;
+    public void PlayerMoveLeft() => ExecuteMove(() => Player.MoveLeft());
+public void PlayerMoveRight() => ExecuteMove(() => Player.MoveRight());
+public void PlayerStay() => ExecuteMove(() => Player.Stay());
 
-        if (moveTurnCount == 2)
-        {
-            MoveUI.SetActive(false);
-            var enemy = _enemyQueue.Peek();
-            float r = UnityEngine.Random.value;
+private void ExecuteMove(Action playerMove)
+{
+    if (_state != GameState.PickMove) return;
 
-            if (r < 0.33f)
-            {
-                enemy.MoveLeft();
-            }
-            else if (r < 0.66f)
-            {
-                enemy.MoveRight();
-            }
-            else
-            {
-                enemy.Stay();
-            }
-        }
-        else
-        {
-            TransitionTo(GameState.TurnResult);
-        }
+    playerMove();
 
-        moveTurnCount--;
-    }
+    var enemy = _enemyQueue.Peek();
+    float r = UnityEngine.Random.value;
+    if (r < 0.33f) enemy.MoveLeft();
+    else if (r < 0.66f) enemy.MoveRight();
+    else enemy.Stay();
+
+    StartCoroutine(WaitForMovesThenResolve());
+}
+
+private IEnumerator WaitForMovesThenResolve()
+{
+    yield return new WaitUntil(() => !Player.IsMoving && !_enemyQueue.Peek().IsMoving);
+    TransitionTo(GameState.TurnResult);
+}
 
     private void UpdateAccordingToState()
     {
@@ -241,12 +241,11 @@ public class GameManager : Singleton<GameManager>
                 }
                 break;
             case GameState.PickCard:
-
-
+                break;
+            case GameState.PickMove:
                 break;
         }
     }
-
 
     System.Collections.IEnumerator StartGame()
     {
@@ -264,7 +263,6 @@ public class GameManager : Singleton<GameManager>
 
         foreach (CarController car in _enemyQueue)
         {
-
             car.EffectPlayer.ToggleDustTrailOn();
         }
 
@@ -273,7 +271,7 @@ public class GameManager : Singleton<GameManager>
 
     private void TransitionTo(GameState state)
     {
-        //transition out of original
+        // transition out of current state
         switch (_state)
         {
             case GameState.Start:
@@ -294,10 +292,9 @@ public class GameManager : Singleton<GameManager>
             case GameState.PickMove:
                 MoveUI.SetActive(false);
                 break;
-
         }
 
-        //transition into new
+        // transition into new state
         switch (state)
         {
             case GameState.SpeedUp:
@@ -307,22 +304,17 @@ public class GameManager : Singleton<GameManager>
             case GameState.PickCard:
                 CardUI.SetActive(true);
                 RefillCards();
-
-
                 break;
             case GameState.PickMove:
-
                 moveTurnCount = 2;
                 MoveUI.SetActive(true);
                 break;
             case GameState.TurnResult:
                 UseCard(PlayerSelectedCard);
+                return;
                 break;
         }
 
         _state = state;
     }
-
-
-
 }

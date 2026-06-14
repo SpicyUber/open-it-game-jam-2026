@@ -74,6 +74,9 @@ public class CarController : MonoBehaviour
     }
 
     public void SetT(float t) => _rail.SetT(t);
+<<<<<<< HEAD
+    
+=======
     public void MoveLeft()
     {
         _moving = true;
@@ -97,6 +100,7 @@ public class CarController : MonoBehaviour
         if (changeLaneSound != null)
             audioSource.PlayOneShot(changeLaneSound);
     }
+>>>>>>> ce0c126ac80c5641abce97eab7a80fc2e968d983
 
     public bool IsHit(List<TargetLane> lanes)
     {
@@ -125,7 +129,38 @@ public class CarController : MonoBehaviour
         return true;
     }
 
-    public void Stay() { _moving = true; Debug.Log("STAY!"); GameManager.Instance.EndMoveTurn(); _moving = false; }
+    public void MoveLeft()
+    {
+        if (_moving) return;
+        if (_alignment <= -1) return; // already at left edge
+        _moving = true;
+        _alignment--;
+        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.left), 1f, () =>
+        {
+            _effectPlayer.PlayDustCloud();
+            _moving = false;
+        });
+    }
+
+    public void MoveRight()
+    {
+        if (_moving) return;
+        if (_alignment >= 1) return; // already at right edge
+        _moving = true;
+        _alignment++;
+        _carMovement.Move(_carMovement.CalculateMove(Vector3Int.right), 1f, () =>
+        {
+            _effectPlayer.PlayDustCloud();
+            _moving = false;
+        });
+    }
+
+    public void Stay()
+    {
+        // no animation needed, just notify moving is done
+    }
+
+    public bool IsMoving => _moving;
 
     public void Freeze()
     {

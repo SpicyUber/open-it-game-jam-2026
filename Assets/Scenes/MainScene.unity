@@ -527,19 +527,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 571746138}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendCardInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CardDisplay, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1582040438144076382, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: onCardClicked.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1582040438144076382, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: onCardClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -729,7 +745,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -738,14 +754,26 @@ PrefabInstance:
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 466446609}
+      objectReference: {fileID: 938991285}
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendCardInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CardDisplay, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1582040438144076382, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: onCardClicked.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1582040438144076382, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: onCardClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1822,9 +1850,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 263791161}
-        m_TargetAssemblyTypeName: CarController, Assembly-CSharp
-        m_MethodName: Stay
+      - m_Target: {fileID: 466446610}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayerStay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3424,19 +3452,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2025945627}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendCardInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CardDisplay, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1582040438144076382, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: onCardClicked.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1582040438144076382, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: onCardClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -4600,9 +4644,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 263791161}
-        m_TargetAssemblyTypeName: CarController, Assembly-CSharp
-        m_MethodName: MoveLeft
+      - m_Target: {fileID: 466446610}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayerMoveLeft
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4927,9 +4971,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 263791161}
-        m_TargetAssemblyTypeName: CarController, Assembly-CSharp
-        m_MethodName: MoveRight
+      - m_Target: {fileID: 466446610}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: PlayerMoveRight
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5979,7 +6023,7 @@ PrefabInstance:
     - target: {fileID: 6455085312453020281, guid: c9231f823018ec345a22df9bf68f7bb9, type: 3}
       propertyPath: 'enemyAbilites.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 6c7f176de0641a642a8034c22bb1e801, type: 2}
+      objectReference: {fileID: 11400000, guid: 05588f41e5d6ae04aaefaa7f51f41d51, type: 2}
     - target: {fileID: 6455085312453020281, guid: c9231f823018ec345a22df9bf68f7bb9, type: 3}
       propertyPath: 'enemyAbilites.Array.data[1]'
       value: 
@@ -5987,7 +6031,7 @@ PrefabInstance:
     - target: {fileID: 6455085312453020281, guid: c9231f823018ec345a22df9bf68f7bb9, type: 3}
       propertyPath: 'enemyAbilites.Array.data[2]'
       value: 
-      objectReference: {fileID: 11400000, guid: 9839cd9b7c132e24fb53ecad6eb89b07, type: 2}
+      objectReference: {fileID: 11400000, guid: 3f1f3b87dd71565419e78725486b442a, type: 2}
     - target: {fileID: 7581234349930859566, guid: c9231f823018ec345a22df9bf68f7bb9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -573.74365
@@ -6133,19 +6177,35 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1916775604}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SendCardInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CardDisplay, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: -5628970000818779176, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1582040438144076382, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: onCardClicked.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1582040438144076382, guid: e10db92da5fba1546a720bcbb185bfc0, type: 3}
       propertyPath: onCardClicked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
