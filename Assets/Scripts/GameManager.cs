@@ -21,6 +21,7 @@ public class GameManager : Singleton<GameManager>
     public UnityEvent<int> StartCountdownChanged;
 
     private int moveTurnCount = 2;
+    private int _resolvedTurnCount = 0;
     public Card PlayerSelectedCard = null;
 
     public GameObject CardUI, MoveUI;
@@ -100,9 +101,25 @@ public class GameManager : Singleton<GameManager>
 
         UseCardAbility(_enemyQueue.Peek().RandomAbility(), Player, _enemyQueue.Peek());
 
+        _resolvedTurnCount++;
+        LogTurnResourceState(_enemyQueue.Peek());
+
         PlayerSelectedCard = null;
 
         TryEndFight();
+    }
+
+    private void LogTurnResourceState(CarController enemy)
+    {
+        string enemyName = enemy != null ? enemy.gameObject.name : "No enemy";
+        string enemyFuel = enemy != null ? enemy.Fuel.CurrentFuel.ToString("0") : "-";
+        string enemyNitro = enemy != null ? enemy.Nitro.CurrentNitro.ToString("0") : "-";
+
+        Debug.Log(
+            $"END TURN {_resolvedTurnCount} | " +
+            $"PLAYER ({Player.gameObject.name}) Fuel: {Player.Fuel.CurrentFuel:0}, Nitro: {Player.Nitro.CurrentNitro:0} | " +
+            $"ENEMY ({enemyName}) Fuel: {enemyFuel}, Nitro: {enemyNitro}"
+        );
     }
 
     private void TryEndFight()
@@ -137,11 +154,13 @@ public class GameManager : Singleton<GameManager>
 
     private void UseCardAbility(Card card, CarController target, CarController caster)
     {
+        if (card == null || target == null || caster == null) return;
+
         Debug.Log($"USED {card.cardName} | Type: {card.cardType}");
 
         if (!caster.SpendNitro(card.nitroPoints))
         {
-            Debug.Log("NOT ENOUGH NITRO!!!");
+            Debug.Log(caster.gameObject.name + ": NOT ENOUGH NITRO!!!");
             return;
         }
 
@@ -158,6 +177,9 @@ public class GameManager : Singleton<GameManager>
                 break;
             case CardType.Debuff:
                 ApplyBuff(card, target, isDebuff: true);
+                break;
+            case CardType.WildCard:
+                ApplyWildCard(card, target, caster);
                 break;
         }
     }
@@ -190,6 +212,24 @@ public class GameManager : Singleton<GameManager>
 
         target.AddNitro(nitroMod);
         target.AddFuel(fuelMod);
+    }
+
+    private void ApplyWildCard(Card card, CarController target, CarController caster)
+    {
+        WildCard wildCard = card as WildCard;
+        if (wildCard == null) return;
+
+        bool success = UnityEngine.Random.Range(0, 100) < wildCard.percentageToHappen;
+        CarController affectedCar = success ? target : caster;
+        int fuelDamage = success ? wildCard.opponentFuelDebuff : wildCard.playerFuelDebuff;
+        int nitroDamage = success ? wildCard.opponentNitroDebuff : wildCard.playerNitroDebuff;
+
+        affectedCar.AddFuel(-fuelDamage);
+        affectedCar.AddNitro(-nitroDamage);
+
+        Debug.Log(success
+            ? $"WildCard success: {target.gameObject.name} loses {fuelDamage} fuel and {nitroDamage} nitro"
+            : $"WildCard failed: {caster.gameObject.name} loses {fuelDamage} fuel and {nitroDamage} nitro");
     }
 
     public void SelectCardPlayer(Card card)
@@ -312,7 +352,6 @@ private IEnumerator WaitForMovesThenResolve()
             case GameState.TurnResult:
                 UseCard(PlayerSelectedCard);
                 return;
-                break;
         }
 
         _state = state;

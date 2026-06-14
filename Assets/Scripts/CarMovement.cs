@@ -29,7 +29,7 @@ public class CarMovement : MonoBehaviour
         ModelTransform.DOKill();
         Vector3 startPos = PositionTransform.position;
 
-        Vector3 direction = (endPos-startPos).normalized;
+        Vector3 direction = transform.InverseTransformDirection(endPos - startPos).normalized;
 
         float angle = direction.x > 0 ? -tiltAngle : tiltAngle;
 
@@ -37,7 +37,7 @@ public class CarMovement : MonoBehaviour
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(
-            ModelTransform.DORotate(
+            ModelTransform.DOLocalRotate(
                 new Vector3(0, 0, angle),
                 duration * 0.2f
             )
@@ -48,7 +48,7 @@ public class CarMovement : MonoBehaviour
         );
 
         sequence.Append(
-            ModelTransform.DORotate(
+            ModelTransform.DOLocalRotate(
                 Vector3.zero,
                 duration * 0.2f
             )

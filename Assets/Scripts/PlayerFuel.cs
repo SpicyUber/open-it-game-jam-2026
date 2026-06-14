@@ -3,22 +3,28 @@ using UnityEngine.Events;
 
 public class PlayerFuel : MonoBehaviour
 {
+    private const float MaxFuel = 100f;
+
     private float _currentFuel;
 
     public UnityEvent OnDeath;
     public UnityEvent<int> OnChange;
     public float CurrentFuel => _currentFuel;
 
-    public void Start() => ModifyFuel(100);
-    public void ModifyFuel(float v)
+    public void Start() => SetFuel(MaxFuel);
+
+    public void ModifyFuel(float delta)
     {
-        int val = (int)v;
+        SetFuel(_currentFuel + delta);
+    }
 
-        _currentFuel = Mathf.Clamp(_currentFuel + val,0,100f);
-
+    private void SetFuel(float value)
+    {
+        float previousFuel = _currentFuel;
+        _currentFuel = Mathf.Clamp(value, 0f, MaxFuel);
         OnChange?.Invoke((int)_currentFuel);
 
-        if (_currentFuel == 0) OnDeath?.Invoke();
-
+        if (previousFuel > 0f && _currentFuel == 0f)
+            OnDeath?.Invoke();
     }
 }
