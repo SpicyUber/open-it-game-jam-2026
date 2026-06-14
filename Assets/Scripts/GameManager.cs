@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -99,11 +100,39 @@ public class GameManager : Singleton<GameManager>
         }
 
         UseCardAbility(_enemyQueue.Peek().RandomAbility(), Player, _enemyQueue.Peek());
+
+        TryEndFight();
+    }
+
+    private void TryEndFight()
+    {
+        if (Player.Fuel.CurrentFuel == 0)
+        { SceneManager.LoadScene(0); }
+
+        if (_enemyQueue.Peek().Fuel.CurrentFuel == 0)
+        {
+            var defeatedEnemy = _enemyQueue.Dequeue();
+
+            defeatedEnemy.ExplodeYourself();
+
+            if (_enemyQueue.Count > 0)
+                TransitionTo(GameState.SpeedUp);
+            else
+                TransitionTo(GameState.Victory);
+        }
+
     }
 
     private void UseCardAbility(Card card, CarController target, CarController caster)
     {
         Debug.Log($"USED {card.cardName} | Type: {card.cardType}");
+
+        if (!caster.SpendNitro(card.nitroPoints))
+        {
+            Debug.Log("NOT ENOUGH NITRO!!!");
+            return;
+        }
+
 
         switch (card.cardType)
         {
@@ -120,6 +149,7 @@ public class GameManager : Singleton<GameManager>
                 ApplyBuff(card, target, isDebuff: true);
                 break;
         }
+
     }
 
     private void ApplyAttack(Card card, CarController target)
