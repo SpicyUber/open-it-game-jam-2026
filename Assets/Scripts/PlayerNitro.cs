@@ -3,22 +3,28 @@ using UnityEngine.Events;
 
 public class PlayerNitro : MonoBehaviour
 {
-    private float _currentFuel;
+    private const float MaxNitro = 100f;
+
+    private float _currentNitro;
 
     public UnityEvent OnDeath;
     public UnityEvent<int> OnChange;
-    public float CurrentNitro => _currentFuel;
+    public float CurrentNitro => _currentNitro;
 
-    public void Start() => ModifyNitro(100f);
-    public void ModifyNitro(float v)
+    public void Start() => SetNitro(MaxNitro);
+
+    public void ModifyNitro(float delta)
     {
-        int val = (int)v;
+        SetNitro(_currentNitro + delta);
+    }
 
-        _currentFuel = Mathf.Clamp(_currentFuel + val, 0, 100f);
+    private void SetNitro(float value)
+    {
+        float previousNitro = _currentNitro;
+        _currentNitro = Mathf.Clamp(value, 0f, MaxNitro);
+        OnChange?.Invoke((int)_currentNitro);
 
-        OnChange?.Invoke((int)_currentFuel);
-
-        if (_currentFuel == 0) OnDeath?.Invoke();
-
+        if (previousNitro > 0f && _currentNitro == 0f)
+            OnDeath?.Invoke();
     }
 }
