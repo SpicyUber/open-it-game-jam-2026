@@ -20,7 +20,6 @@ public class CarMovement : MonoBehaviour
         Gizmos.DrawSphere(PositionTransform.position, 1);
         Gizmos.DrawSphere(CalculateMove(Vector3Int.right),1);
         Gizmos.DrawSphere(CalculateMove(Vector3Int.left),1);
-
     }
 
     public void Move( Vector3 endPos ,float duration, Action onComplete = null, float tiltAngle = 45)
@@ -44,8 +43,11 @@ public class CarMovement : MonoBehaviour
         );
 
         sequence.Join(
-            PositionTransform.DOLocalMove(transform.InverseTransformPoint(endPos), duration)
-        );
+    PositionTransform.DOLocalMove(
+        PositionTransform.parent.InverseTransformPoint(endPos),
+        duration
+    )
+);
 
         sequence.Append(
             ModelTransform.DOLocalRotate(

@@ -14,4 +14,6 @@ public class Card : ScriptableObject
     public int nitroBuff; // ZA (DE)BUFF koliko dodaje/oduzima nitra
     public int fuelBuff; // ZA (DE)BUFF koliko dodaje/oduzima fuel-a
     public List<TargetLane> targetLanes; // koje lejnove pogadja
+    public EffectType Effect;
+    public Color Color;
 }

@@ -9,4 +9,6 @@ public class EffectPlayer : MonoBehaviour
     public void ToggleDustTrailOff() => _dustTrail.Stop();
 
     public void ToggleDustTrailOn() => _dustTrail.Play();
+
+    //
 }
