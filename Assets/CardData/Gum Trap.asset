@@ -20,4 +20,6 @@ MonoBehaviour:
   damage: 35
   nitroBuff: 0
   fuelBuff: 0
-  targetLanes: 0100000002000000
+  targetLanes: 0100000000000000
+  Effect: 0
+  Color: {r: 0, g: 0, b: 0, a: 0}

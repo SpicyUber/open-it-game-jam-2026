@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75ca837bd13fa1f41a0cff4ff3f1e9f6, type: 3}
   m_Name: Spike
   m_EditorClassIdentifier: Assembly-CSharp::NemanjaNamespace.Card
-  cardImage: {fileID: 0}
+  cardImage: {fileID: 21300000, guid: 5bdc2078641fb6a449986f1fc18a5499, type: 3}
   cardName: Spike
   cardType: 0
   effectDescription: Flat tire, flat chance. 45 damage points on the right lane.
@@ -20,4 +20,6 @@ MonoBehaviour:
   damage: 45
   nitroBuff: 0
   fuelBuff: 0
-  targetLanes: 02000000
+  targetLanes: 01000000
+  Effect: 0
+  Color: {r: 0, g: 0, b: 0, a: 0}
