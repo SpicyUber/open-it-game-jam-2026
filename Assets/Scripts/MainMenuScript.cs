@@ -5,7 +5,7 @@ public class MainMenuScript : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene(""); //dodati ime scene
+        SceneManager.LoadScene("MainScene"); //dodati ime scene
     }
 
     public void OpenSettings()
